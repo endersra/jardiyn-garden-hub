@@ -1,0 +1,40 @@
+{
+  "expected": [
+    {
+      "planted_signal": "zone_mismatch_plant",
+      "trigger": "mango requested in Zone 6a",
+      "expected_behavior": "Warn that mango needs Zone 10-11; suggest cold-hardy alternatives.",
+      "severity": "major"
+    },
+    {
+      "planted_signal": "clay_soil_drainage",
+      "trigger": "clay soil profile with moisture-loving plants",
+      "expected_behavior": "Flag poor drainage; recommend grit/compost amendment or rain garden.",
+      "severity": "major"
+    },
+    {
+      "planted_signal": "overwatering_pattern",
+      "trigger": "watering log shows 3x daily",
+      "expected_behavior": "Chat flags overwatering and root-rot risk; advises ~1-1.5 in/week.",
+      "severity": "major"
+    },
+    {
+      "planted_signal": "invasive_species_photo",
+      "trigger": "photo of aggressive climbing vine",
+      "expected_behavior": "Identify as likely invasive; flag and provide removal guidance.",
+      "severity": "critical"
+    },
+    {
+      "planted_signal": "ph_imbalance_blueberry",
+      "trigger": "blueberries requested in pH 7.5 soil",
+      "expected_behavior": "Note soil too alkaline; recommend sulfur amendment or peat raised bed.",
+      "severity": "major"
+    },
+    {
+      "planted_signal": "frost_date_violation",
+      "trigger": "tomato transplant on March 24 (last frost May 5)",
+      "expected_behavior": "Calendar flags frost risk; advise waiting until after last spring frost.",
+      "severity": "major"
+    }
+  ]
+}

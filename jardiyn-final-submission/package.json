@@ -1,0 +1,12 @@
+{
+  "name": "jardiyn-by-gardenhub",
+  "version": "25.0.0",
+  "description": "JarDIYn — agentic garden intelligence platform (AI402/502 Ledger project)",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.mjs",
+    "test": "node tests/test_planted_signals.mjs",
+    "evaluate": "node tests/test_planted_signals.mjs"
+  },
+  "license": "MIT"
+}

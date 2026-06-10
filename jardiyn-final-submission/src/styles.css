@@ -1,0 +1,75 @@
+/* JarDIYn design system — calm, garden-toned, accessible */
+:root {
+  --green-900:#1b3a2b; --green-700:#2f6b4a; --green-500:#4a9d6e;
+  --green-100:#e6f2ea; --soil:#6b4f3a; --sun:#e0a93f;
+  --ink:#1f2421; --muted:#6b756e; --line:#d9e2dc; --bg:#f6f9f7; --white:#fff;
+  --radius:12px; --shadow:0 2px 10px rgba(27,58,43,.08);
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg); color:var(--ink); line-height:1.5; }
+
+.topbar { display:flex; justify-content:space-between; align-items:center;
+  padding:16px 24px; background:var(--green-900); color:var(--white); }
+.brand { display:flex; align-items:center; gap:12px; }
+.leaf { font-size:32px; }
+.topbar h1 { font-size:22px; letter-spacing:.5px; }
+.tag { font-size:12px; opacity:.8; }
+
+.lenses { display:flex; gap:4px; padding:8px 16px; background:var(--white);
+  border-bottom:1px solid var(--line); overflow-x:auto; }
+.lenses button { border:none; background:transparent; padding:10px 16px;
+  border-radius:8px; cursor:pointer; font-size:14px; color:var(--muted); white-space:nowrap; }
+.lenses button:hover { background:var(--green-100); }
+.lenses button.active { background:var(--green-500); color:var(--white); font-weight:600; }
+
+main { max-width:760px; margin:0 auto; padding:24px 16px 64px; }
+.lens { display:none; }
+.lens.active { display:block; }
+.lens h2 { color:var(--green-900); margin-bottom:12px; }
+.hint { font-size:13px; color:var(--muted); margin:6px 0 12px; }
+
+.card { background:var(--white); border:1px solid var(--line);
+  border-radius:var(--radius); padding:16px; box-shadow:var(--shadow); margin-bottom:12px; }
+.card.muted { color:var(--muted); }
+.card h3 { color:var(--green-700); margin-bottom:8px; font-size:15px; }
+.kv { display:grid; grid-template-columns:130px 1fr; gap:4px 12px; font-size:14px; }
+.kv span:first-child { color:var(--muted); }
+
+input[type=text] { width:100%; padding:10px 12px; border:1px solid var(--line);
+  border-radius:8px; font-size:14px; margin-bottom:10px; }
+.btn-primary { background:var(--green-500); color:var(--white); border:none;
+  padding:10px 18px; border-radius:8px; cursor:pointer; font-size:14px; font-weight:600; }
+.btn-primary:hover { background:var(--green-700); }
+.btn-ghost { background:transparent; color:var(--green-700); border:1px solid var(--green-500);
+  padding:8px 16px; border-radius:8px; cursor:pointer; font-size:13px; margin-top:10px; }
+
+.signal { border-left:4px solid var(--sun); background:#fff8ec;
+  padding:10px 14px; border-radius:8px; margin:8px 0; font-size:14px; }
+.signal.critical { border-left-color:#c0392b; background:#fdecea; }
+.signal .sig-name { font-family:monospace; font-size:12px; color:var(--muted); }
+.signal .sig-trigger { font-family:monospace; font-size:11px; color:var(--muted);
+  display:block; margin-top:4px; }
+
+.chatlog { background:var(--white); border:1px solid var(--line); border-radius:var(--radius);
+  padding:12px; min-height:220px; margin-bottom:10px; }
+.chatrow { display:flex; gap:8px; }
+.chatrow input { margin-bottom:0; }
+.msg { padding:8px 12px; border-radius:10px; margin:6px 0; font-size:14px; max-width:85%; }
+.msg.user { background:var(--green-500); color:var(--white); margin-left:auto; }
+.msg.bot { background:var(--green-100); color:var(--ink); }
+
+.timeline, .trace { list-style:none; }
+.timeline li, .trace li { background:var(--white); border:1px solid var(--line);
+  border-radius:8px; padding:10px 12px; margin:6px 0; font-size:13px; }
+.trace li { font-family:monospace; font-size:12px; }
+.trace .t-agent { color:var(--green-700); font-weight:600; }
+.trace .t-model { color:var(--sun); }
+.muted { color:var(--muted); }
+
+.foot { text-align:center; font-size:12px; color:var(--muted);
+  padding:16px; border-top:1px solid var(--line); }
+ul.tasks { margin:8px 0 0 18px; font-size:14px; }
+ul.tasks li { margin:4px 0; }
+.palette { font-size:14px; }
+.palette li { margin:4px 0 4px 18px; }

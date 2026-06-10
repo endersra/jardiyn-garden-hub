@@ -1,0 +1,45 @@
+{
+  "profiles": [
+    {
+      "profile_id": "demo-grand-rapids",
+      "owner": "Sarah (novice homeowner)",
+      "zone": "6a",
+      "last_spring_frost": "2026-05-05",
+      "first_fall_frost": "2026-10-15",
+      "soil_type": "loam",
+      "soil_ph": 6.7,
+      "sun_exposure": "full sun",
+      "garden_size_sqft": 800,
+      "existing_plants": ["tomato", "basil", "lavender"],
+      "goals": ["pollinator friendly", "low water"]
+    },
+    {
+      "profile_id": "test-clay-drainage",
+      "owner": "Mike (eco enthusiast)",
+      "zone": "5b",
+      "last_spring_frost": "2026-04-22",
+      "first_fall_frost": "2026-10-19",
+      "soil_type": "clay",
+      "soil_ph": 6.9,
+      "sun_exposure": "partial shade",
+      "garden_size_sqft": 1200,
+      "existing_plants": ["hosta", "astilbe"],
+      "goals": ["native plants", "rain garden"],
+      "planted_signal": "clay_soil_drainage"
+    },
+    {
+      "profile_id": "test-ph-imbalance",
+      "owner": "Lisa (designer, client site)",
+      "zone": "6b",
+      "last_spring_frost": "2026-05-01",
+      "first_fall_frost": "2026-10-18",
+      "soil_type": "loam",
+      "soil_ph": 7.5,
+      "sun_exposure": "full sun",
+      "garden_size_sqft": 600,
+      "existing_plants": [],
+      "goals": ["edible garden", "blueberries"],
+      "planted_signal": "ph_imbalance_blueberry"
+    }
+  ]
+}

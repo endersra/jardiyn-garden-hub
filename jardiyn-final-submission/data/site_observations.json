@@ -1,0 +1,41 @@
+{
+  "observations": [
+    {
+      "observation_id": "obs-001",
+      "profile_id": "demo-grand-rapids",
+      "type": "photo_scan",
+      "subject": "tomato leaf",
+      "note": "dark concentric spots on lower leaves",
+      "planted_signal": null
+    },
+    {
+      "observation_id": "obs-002",
+      "profile_id": "demo-grand-rapids",
+      "type": "watering_log",
+      "note": "watered 3 times per day for the past week",
+      "planted_signal": "overwatering_pattern"
+    },
+    {
+      "observation_id": "obs-003",
+      "profile_id": "test-clay-drainage",
+      "type": "photo_scan",
+      "subject": "fast-spreading vine along fence",
+      "note": "broad leaves, climbing aggressively over shrubs",
+      "planted_signal": "invasive_species_photo"
+    },
+    {
+      "observation_id": "obs-004",
+      "profile_id": "demo-grand-rapids",
+      "type": "design_request",
+      "note": "user asked to add a mango tree to the layout",
+      "planted_signal": "zone_mismatch_plant"
+    },
+    {
+      "observation_id": "obs-005",
+      "profile_id": "demo-grand-rapids",
+      "type": "calendar_request",
+      "note": "user wants to transplant tomatoes outdoors on March 24",
+      "planted_signal": "frost_date_violation"
+    }
+  ]
+}

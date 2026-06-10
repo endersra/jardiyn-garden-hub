@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JarDIYn by GardenHub</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="leaf">&#127807;</span>
+      <div>
+        <h1>JarDIYn</h1>
+        <p class="tag">by GardenHub &middot; spatial garden intelligence</p>
+      </div>
+    </div>
+    <button id="loadDemo" class="btn-primary">Load demo garden</button>
+  </header>
+
+  <nav class="lenses" id="lensNav">
+    <button data-lens="dashboard" class="active">Dashboard</button>
+    <button data-lens="design">Design</button>
+    <button data-lens="report">Report</button>
+    <button data-lens="chat">Chat</button>
+    <button data-lens="history">History</button>
+    <button data-lens="trace">Agent Trace</button>
+  </nav>
+
+  <main id="app">
+    <!-- Dashboard lens -->
+    <section data-lens="dashboard" class="lens active">
+      <h2>Garden Dashboard</h2>
+      <div id="profileCard" class="card muted">No garden loaded. Click "Load demo garden" to begin.</div>
+      <div id="dashSignals"></div>
+    </section>
+
+    <!-- Design lens -->
+    <section data-lens="design" class="lens">
+      <h2>Design Copilot</h2>
+      <p class="hint">Describe a garden in plain language; JarDIYn returns a zone-correct plant palette.</p>
+      <input id="designInput" type="text" placeholder="e.g. add a mango tree to a pollinator border" />
+      <button id="designRun" class="btn-primary">Generate design</button>
+      <div id="designOut"></div>
+    </section>
+
+    <!-- Report lens -->
+    <section data-lens="report" class="lens">
+      <h2>Personalized DIY Report</h2>
+      <button id="reportRun" class="btn-primary">Generate seasonal report</button>
+      <div id="reportOut"></div>
+      <button id="reportExport" class="btn-ghost" hidden>Export report (Markdown)</button>
+    </section>
+
+    <!-- Chat lens -->
+    <section data-lens="chat" class="lens">
+      <h2>Garden Assistant</h2>
+      <div id="chatLog" class="chatlog"></div>
+      <div class="chatrow">
+        <input id="chatInput" type="text" placeholder="Ask a garden question..." />
+        <button id="chatSend" class="btn-primary">Send</button>
+      </div>
+      <div class="hint">Try: "I watered 3 times per day this week, is that ok?"</div>
+    </section>
+
+    <!-- History lens -->
+    <section data-lens="history" class="lens">
+      <h2>Garden History</h2>
+      <ul id="historyList" class="timeline"><li class="muted">No activity yet.</li></ul>
+    </section>
+
+    <!-- Agent Trace lens -->
+    <section data-lens="trace" class="lens">
+      <h2>Agent Trace</h2>
+      <p class="hint">Transparency into the agentic pipeline: which agent/model handled each step.</p>
+      <ul id="traceList" class="trace"><li class="muted">Run any feature to see the trace.</li></ul>
+    </section>
+  </main>
+
+  <footer class="foot">
+    JarDIYn v25 &middot; demo mode (LLM_MODE=mock) &middot; built with the Ledger agentic methodology
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
