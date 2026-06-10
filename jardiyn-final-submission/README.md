@@ -152,3 +152,58 @@ The `data/` folder contains structured synthetic garden profiles and observation
 ## License
 
 MIT.
+
+---
+
+## Build Log
+
+### Tools used to build this
+- **Claude (Anthropic)** — primary AI for planning, agent design, and code generation
+- **Claude Code methodology** — agentic workflow with orchestrator + specialist sub-agents
+- **VS Code / browser editing** for final polish
+
+### System prompts (verbatim)
+
+#### Plant & Pest Identification prompt (`src/prompts/identify.md`)
+
+#### Garden Design prompt (`src/prompts/design.md`)
+
+(Full prompts in `src/prompts/`.)
+
+### Prompting techniques used
+- **Role + constraints** — every agent starts with a clear role and non-negotiables (see `.claude/agents/*.md`)
+- **Structured output** — every prompt specifies required JSON shape, so the app can parse responses reliably
+- **Grounding** — `domain-primer.md` (USDA zones, soils, frost dates, pests) is injected as context on every domain call
+- **Deterministic-first** — recommendation logic runs a rule engine (`src/services/ruleEngine.js`) *before* any LLM narrative, so the six planted signals are caught reliably
+- **Model waterfall** — Opus for orchestration, Sonnet for specialists, Haiku for review (per `CLAUDE.md`)
+
+### Evaluation
+
+**What "good" means here:** the system must surface all six planted signals
+(zone mismatch, clay drainage, overwatering, invasive species, pH imbalance,
+frost date violation) on the synthetic test profiles.
+
+**How I tested:** ran `npm test`, which executes
+`tests/test_planted_signals.mjs` against the synthetic fixtures in `data/`.
+
+**Result: 8 / 8 checks PASS** — all six planted signals detected, plus
+trigger-traceability and severity-gating checks. See `evaluation.md` for
+the full table.
+
+### Honest limits
+- The v25 build runs in **mock mode** — no live LLM calls. Live mode (v26)
+  is fully spec'd in `architecture.md` and the service layer is structured
+  for a drop-in swap.
+- Plant ID accuracy is only as good as the synthetic test set; a real
+  deployment would need a labeled image corpus.
+- Smart-home control is mocked for safety; real integration requires an
+  OAuth flow and a security review.
+
+### What I'd do next (v26)
+- Replace `src/services/mockApi.js` calls with real Claude API calls via
+  a small FastAPI backend (specified in `architecture.md`)
+- Deploy backend to Render, swap `LLM_MODE=mock` for `LLM_MODE=anthropic_api`
+- Build a labeled test set for plant ID precision/recall measurement
+
+- Add build log to README
+  
