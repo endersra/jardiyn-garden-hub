@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "jardiyn": {
+      "command": "python",
+      "args": [
+        "jardiyn-final-submission/mcp/jardiyn_mcp_server.py"
+      ]
+    }
+  }
+}
