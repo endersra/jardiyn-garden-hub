@@ -138,7 +138,7 @@ A feature is done when:
 - [x] Create live orchestrator workflow.
 - [x] Add garden memory/tool retrieval.
 - [x] Add seasonal context tool.
-- [ ] Add Claude-powered garden reasoning agent.
+- [x] Add Claude-powered garden reasoning agent.
 - [ ] Add reviewer agent validation.
 - [x] Return backend-generated agent trace to frontend.
 - [ ] Replace mock-only chat path with live backend chat path.
