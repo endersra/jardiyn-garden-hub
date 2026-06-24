@@ -1,5 +1,6 @@
 import os
 import httpx
+from agents.agentic_tool_loop import run_agentic_tool_chat
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -65,11 +66,18 @@ def health_check():
 
 @app.post("/api/agent/chat")
 def agent_chat(request: ChatRequest):
-    return run_chat_workflow(
-        user_message=request.message,
-        user_id=request.user_id,
-    )
+    """
+    Live Project 3 agent endpoint.
 
+    Uses Claude tool calling so the model can decide whether to call JarDIYn
+    tools, receive tool_result data, and generate the final answer.
+    """
+    payload_dict = request.model_dump() if hasattr(request, "model_dump") else request.dict()
+
+    message = payload_dict.get("message", "")
+    user_id = payload_dict.get("user_id", "public-frontend-user")
+
+    return run_agentic_tool_chat(message=message, user_id=user_id)
 
 WEATHER_CODE_LABELS = {
     0: "Clear sky",
