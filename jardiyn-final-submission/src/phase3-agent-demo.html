@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JarDIYn Phase 3 Live Agent Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7f1;
+      color: #1f2d1f;
+      margin: 0;
+      padding: 0;
+    }
+
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    h1, h2 {
+      margin-top: 0;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+
+    input, textarea {
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #c8d8c1;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 1rem;
+    }
+
+    textarea {
+      min-height: 120px;
+    }
+
+    button {
+      background: #2f6f3e;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+
+    button:hover {
+      background: #245832;
+    }
+
+    pre {
+      white-space: pre-wrap;
+      background: #f1f4ef;
+      padding: 16px;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+
+    .trace-step {
+      border-left: 4px solid #2f6f3e;
+      padding-left: 12px;
+      margin-bottom: 10px;
+    }
+
+    .small {
+      font-size: 0.92rem;
+      color: #4d5c4d;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="card">
+      <h1>JarDIYn Phase 3 Live Agent Demo</h1>
+      <p>
+        This browser demo sends a gardening question to the FastAPI backend,
+        which routes the request through the agent workflow and returns an answer,
+        reviewer validation, and an agent trace.
+      </p>
+      <p class="small">
+        Local default: http://127.0.0.1:8000. After backend deployment, paste the Render backend URL below.
+      </p>
+    </section>
+
+    <section class="card">
+      <label for="apiBase">Backend API Base URL</label>
+      <input id="apiBase" value="http://127.0.0.1:8000" />
+
+      <label for="message">Gardening Question</label>
+      <textarea id="message">My basil leaves are yellow and the soil is soggy. What should I do?</textarea>
+
+      <button id="askButton">Ask JarDIYn Agent</button>
+    </section>
+
+    <section class="card">
+      <h2>Agent Answer</h2>
+      <pre id="answer">No answer yet.</pre>
+    </section>
+
+    <section class="card">
+      <h2>Reviewer Validation</h2>
+      <pre id="review">No review yet.</pre>
+    </section>
+
+    <section class="card">
+      <h2>Agent Trace</h2>
+      <div id="trace">No trace yet.</div>
+    </section>
+  </main>
+
+  <script>
+    const apiBaseInput = document.getElementById("apiBase");
+    const messageInput = document.getElementById("message");
+    const askButton = document.getElementById("askButton");
+    const answerOutput = document.getElementById("answer");
+    const reviewOutput = document.getElementById("review");
+    const traceOutput = document.getElementById("trace");
+
+    const params = new URLSearchParams(window.location.search);
+    const apiFromUrl = params.get("api");
+    const apiFromStorage = localStorage.getItem("JARDIYN_API_BASE");
+
+    if (apiFromUrl) {
+      apiBaseInput.value = apiFromUrl;
+      localStorage.setItem("JARDIYN_API_BASE", apiFromUrl);
+    } else if (apiFromStorage) {
+      apiBaseInput.value = apiFromStorage;
+    }
+
+    askButton.addEventListener("click", async () => {
+      const apiBase = apiBaseInput.value.replace(/\/$/, "");
+      const message = messageInput.value.trim();
+
+      localStorage.setItem("JARDIYN_API_BASE", apiBase);
+
+      answerOutput.textContent = "Thinking...";
+      reviewOutput.textContent = "Waiting for reviewer validation...";
+      traceOutput.textContent = "Waiting for agent trace...";
+
+      try {
+        const response = await fetch(`${apiBase}/api/agent/chat`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message,
+            user_id: "browser-demo-user"
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Backend returned ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        answerOutput.textContent = data.answer || data.final_answer || "No answer returned.";
+        reviewOutput.textContent = JSON.stringify(data.review || {}, null, 2);
+
+        traceOutput.innerHTML = "";
+        const trace = data.trace || [];
+
+        if (!trace.length) {
+          traceOutput.textContent = "No trace returned.";
+          return;
+        }
+
+        trace.forEach((step) => {
+          const div = document.createElement("div");
+          div.className = "trace-step";
+          div.innerHTML = `
+            <strong>Step ${step.step || ""}: ${step.agent || "unknown"}</strong><br>
+            Action: ${step.action || "n/a"}<br>
+            Source: ${step.source || "n/a"}<br>
+            Model: ${step.model || "n/a"}
+          `;
+          traceOutput.appendChild(div);
+        });
+      } catch (error) {
+        answerOutput.textContent = `Error: ${error.message}`;
+        reviewOutput.textContent = "No review because the request failed.";
+        traceOutput.textContent = "No trace because the request failed.";
+      }
+    });
+  </script>
+</body>
+</html>

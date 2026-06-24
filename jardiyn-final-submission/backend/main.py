@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -10,6 +11,28 @@ app = FastAPI(
     description="Phase 3 live agent runtime backend for JarDIYn by Garden Hub.",
     version="0.2.0",
 )
+
+
+DEFAULT_CORS_ORIGINS = (
+    "http://127.0.0.1:5500,"
+    "http://localhost:5500,"
+    "https://endersra.github.io"
+)
+
+CORS_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("FRONTEND_ORIGIN", DEFAULT_CORS_ORIGINS).split(",")
+    if origin.strip()
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=CORS_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -35,7 +58,7 @@ def health_check():
         "status": "ok",
         "service": "jardiyn-agent-backend",
         "phase": "phase-3-live-agent-runtime",
-        "llm_mode": "mock",
+        "llm_mode": os.getenv("LLM_MODE", "mock").lower(),
     }
 
 
