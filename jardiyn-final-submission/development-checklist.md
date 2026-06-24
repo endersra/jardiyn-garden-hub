@@ -146,8 +146,8 @@ A feature is done when:
 - [x] Add backend tests for agent routing.
 - [x] Add tests proving LLM client is called or mocked through the backend.
 - [x] Add tests proving trace includes orchestrator, tools, reasoner, and reviewer.
-- [ ] Deploy backend.
-- [ ] Connect deployed frontend to deployed backend.
+- [x] Deploy backend.
+- [x] Connect deployed frontend to deployed backend.
 - [ ] Update README honest limits.
 - [ ] Update reflection.md with Phase 3 changes.
 
