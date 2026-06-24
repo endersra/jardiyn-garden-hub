@@ -1,0 +1,5 @@
+
+# Python backend local files
+jardiyn-final-submission/backend/.venv/
+**/__pycache__/
+*.pyc
