@@ -135,17 +135,17 @@ A feature is done when:
 - [x] Add FastAPI backend.
 - [ ] Add Claude API client wrapper.
 - [ ] Keep Claude API key in backend environment variables only.
-- [ ] Create live orchestrator workflow.
-- [ ] Add garden memory/tool retrieval.
-- [ ] Add seasonal context tool.
+- [x] Create live orchestrator workflow.
+- [x] Add garden memory/tool retrieval.
+- [x] Add seasonal context tool.
 - [ ] Add Claude-powered garden reasoning agent.
 - [ ] Add reviewer agent validation.
-- [ ] Return backend-generated agent trace to frontend.
+- [x] Return backend-generated agent trace to frontend.
 - [ ] Replace mock-only chat path with live backend chat path.
 - [ ] Keep mock mode only as fallback/offline demo.
-- [ ] Add backend tests for agent routing.
+- [x] Add backend tests for agent routing.
 - [ ] Add tests proving LLM client is called or mocked through the backend.
-- [ ] Add tests proving trace includes orchestrator, tools, reasoner, and reviewer.
+- [x] Add tests proving trace includes orchestrator, tools, reasoner, and reviewer.
 - [ ] Deploy backend.
 - [ ] Connect deployed frontend to deployed backend.
 - [ ] Update README honest limits.
