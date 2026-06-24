@@ -215,12 +215,44 @@
 - "Add coder.md so .claude/agents/ matches every example name in the
   submission template verbatim."
 
-**Action Taken:**
-- Added .claude/agents/coder.md (Sonnet — implements app code, rule engine,
-  services) following the full sub-agent pattern.
-- Updated CLAUDE.md agent list and development-checklist.md counts.
-- .claude/agents/ now contains orchestrator, coder, reviewer, ui-engineer,
-  data-architect (all template names) plus garden-reasoner and
-  product-strategist (domain specialists).
+## Entry 10: Project 2 Feedback — Mock Agentic Runtime
 
-**Status:** IMPLEMENTED — agent folder now a literal template match
+**Date:** 2026-06-24
+**Type:** Projet 3 Strong Priority
+**Feedback:**
+
+* The project was visually strong and well documented.
+* The documentation showed strong planning, customer understanding, and real-world impact.
+* The multi-agent orchestrator pattern was appropriate for JarDIYn.
+* However, the submitted v25 build ran entirely in mock mode.
+* The agentic behavior was simulated through `mockApi.js` and deterministic `ruleEngine.js`.
+* Claude API calls were not wired into the runtime.
+* The Claude model waterfall was specified in the documentation but not implemented in the working app.
+* The passing tests were useful, but they tested deterministic rule-engine behavior rather than the actual agentic/LLM workflow.
+
+**Required Phase 3 Response:**
+
+* Route real user interactions through a FastAPI backend.
+* Keep Claude API calls on the backend only.
+* Implement a live orchestrator agent that coordinates specialist agents.
+* Add at least one live Claude-powered specialist agent.
+* Add memory/tool retrieval before the LLM response.
+* Add reviewer-agent validation before returning the final answer.
+* Return a real backend-generated agent trace to the frontend.
+* Keep `mockApi.js` and `ruleEngine.js` only as fallback, regression-test, or offline-demo support.
+* Update tests so they verify the agent runtime, not only planted-signal detection in the deterministic rule engine.
+
+**Action Taken / Planned:**
+
+* Phase 3 will prioritize building a live backend-powered agent runtime.
+* The deterministic rule engine will remain as a safety fallback and testing fixture, but it will no longer be the primary proof of agentic behavior.
+* Evaluation will be expanded to test model routing, prompt use, memory retrieval, tool calls, reviewer output, and trace generation.
+* README.md, architecture.md, development-checklist.md, and reflection.md will be updated to clearly explain the Phase 3 change from simulated agents to operational agents.
+
+**Status:** 🔲 IN PROGRESS — Phase 3 priority
+
+---
+
+**Total Entries:** 10  
+**Last Updated:** June 24, 2026  
+**Status:** Phase 3 live agent runtime improvements in progress
