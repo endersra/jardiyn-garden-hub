@@ -128,3 +128,27 @@ A feature is done when:
 - [x] This development checklist is updated
 - [x] The demo is live and the user can demo it locally
 
+---
+
+## Phase 3 — Live Agent Runtime
+
+- [ ] Add FastAPI backend.
+- [ ] Add Claude API client wrapper.
+- [ ] Keep Claude API key in backend environment variables only.
+- [ ] Create live orchestrator workflow.
+- [ ] Add garden memory/tool retrieval.
+- [ ] Add seasonal context tool.
+- [ ] Add Claude-powered garden reasoning agent.
+- [ ] Add reviewer agent validation.
+- [ ] Return backend-generated agent trace to frontend.
+- [ ] Replace mock-only chat path with live backend chat path.
+- [ ] Keep mock mode only as fallback/offline demo.
+- [ ] Add backend tests for agent routing.
+- [ ] Add tests proving LLM client is called or mocked through the backend.
+- [ ] Add tests proving trace includes orchestrator, tools, reasoner, and reviewer.
+- [ ] Deploy backend.
+- [ ] Connect deployed frontend to deployed backend.
+- [ ] Update README honest limits.
+- [ ] Update reflection.md with Phase 3 changes.
+
+**Current Status:** Phase 3 live agent runtime improvements in progress
