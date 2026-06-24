@@ -94,21 +94,45 @@ WEATHER_CODE_LABELS = {
 }
 
 
+def _weather_fallback(city: str, reason: str) -> dict:
+    return {
+        "location": {
+            "name": city,
+            "state": None,
+            "country": None,
+            "latitude": None,
+            "longitude": None,
+        },
+        "current": {
+            "temperature_f": None,
+            "humidity_percent": None,
+            "precipitation_inches": None,
+            "wind_mph": None,
+            "weather_code": None,
+            "summary": "Weather temporarily unavailable",
+        },
+        "daily": {},
+        "source": "weather_fallback",
+        "warning": reason,
+    }
+
+
 @app.get("/api/weather")
 def get_weather(city: str = "Grand Rapids"):
     """
     Real weather tool for Project 3 frontend.
 
-    Uses Open-Meteo geocoding to resolve a city name, then retrieves
-    current and short-range forecast data for garden context.
+    Uses Open-Meteo when available. If the external weather service fails,
+    returns a safe fallback instead of breaking the frontend with a 502.
     """
-    city = city.strip()
+    city = city.strip() or "Grand Rapids"
 
-    if not city:
-        raise HTTPException(status_code=400, detail="City is required.")
+    headers = {
+        "User-Agent": "JarDIYnGardenAssistant/1.0 educational project"
+    }
 
     try:
-        with httpx.Client(timeout=12.0) as client:
+        with httpx.Client(timeout=15.0, follow_redirects=True, headers=headers) as client:
             geo_response = client.get(
                 "https://geocoding-api.open-meteo.com/v1/search",
                 params={
@@ -118,16 +142,18 @@ def get_weather(city: str = "Grand Rapids"):
                     "format": "json",
                 },
             )
-            geo_response.raise_for_status()
-            geo_data = geo_response.json()
 
+            if geo_response.status_code != 200:
+                return _weather_fallback(
+                    city,
+                    f"Geocoding service returned status {geo_response.status_code}.",
+                )
+
+            geo_data = geo_response.json()
             results = geo_data.get("results") or []
 
             if not results:
-                raise HTTPException(
-                    status_code=404,
-                    detail=f"No weather location found for {city}.",
-                )
+                return _weather_fallback(city, f"No weather location found for {city}.")
 
             location = results[0]
             latitude = location["latitude"]
@@ -138,18 +164,8 @@ def get_weather(city: str = "Grand Rapids"):
                 params={
                     "latitude": latitude,
                     "longitude": longitude,
-                    "current": (
-                        "temperature_2m,"
-                        "relative_humidity_2m,"
-                        "precipitation,"
-                        "weather_code,"
-                        "wind_speed_10m"
-                    ),
-                    "daily": (
-                        "temperature_2m_max,"
-                        "temperature_2m_min,"
-                        "precipitation_probability_max"
-                    ),
+                    "current": "temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m",
+                    "daily": "temperature_2m_max,temperature_2m_min,precipitation_probability_max",
                     "forecast_days": 3,
                     "temperature_unit": "fahrenheit",
                     "wind_speed_unit": "mph",
@@ -157,14 +173,17 @@ def get_weather(city: str = "Grand Rapids"):
                     "timezone": "auto",
                 },
             )
-            forecast_response.raise_for_status()
+
+            if forecast_response.status_code != 200:
+                return _weather_fallback(
+                    city,
+                    f"Forecast service returned status {forecast_response.status_code}.",
+                )
+
             forecast_data = forecast_response.json()
 
-    except httpx.HTTPError as error:
-        raise HTTPException(
-            status_code=502,
-            detail=f"Weather service error: {error}",
-        ) from error
+    except Exception as error:
+        return _weather_fallback(city, f"Weather service unavailable: {error}")
 
     current = forecast_data.get("current", {})
     weather_code = current.get("weather_code")
