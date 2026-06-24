@@ -137,3 +137,41 @@ Haiku 4.5 (Review, Classification, Zone lookup)
 - Rate limiting: 100 req/hour per IP
 - HTTPS enforced (production)
 - GDPR/CCPA ready (no GPS storage, data deletion on request)
+
+## Phase 3 Runtime Architecture
+
+Phase 3 addresses Project 2 feedback by replacing mock-only agent simulation with a live backend-powered agent workflow.
+
+The Project 2 version of JarDIYn had strong documentation, strong UI design, and a clear multi-agent concept. However, the working runtime still depended on `mockApi.js` and deterministic `ruleEngine.js`. This meant the visible agentic behavior was simulated rather than operational.
+
+Phase 3 changes the runtime from a mock-first demo into a live agentic system.
+
+### Required Runtime Path
+
+The required Phase 3 runtime path is:
+
+```text
+Frontend
+→ FastAPI backend
+→ Orchestrator Agent
+→ Garden Memory Tool
+→ Seasonal Context Tool
+→ Garden Reasoning Agent
+→ Claude API
+→ Reviewer Agent
+→ Agent Trace
+→ Frontend
+```
+
+### Backend Responsibility
+
+The FastAPI backend is responsible for:
+- Receiving user requests from the frontend.
+- Protecting the Claude API key through environment variables.
+- Running the orchestrator workflow.
+- Calling memory and context tools before generating the final answer.
+- Calling Claude through a backend LLM client.
+- Passing the response through a reviewer agent.
+- Returning the final answer and real agent trace to the frontend.
+
+The frontend must never call Claude directly. All Claude API calls must happen through the backend.
