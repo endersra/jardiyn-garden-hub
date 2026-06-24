@@ -139,7 +139,7 @@ A feature is done when:
 - [x] Add garden memory/tool retrieval.
 - [x] Add seasonal context tool.
 - [x] Add Claude-powered garden reasoning agent.
-- [ ] Add reviewer agent validation.
+- [x] Add reviewer agent validation.
 - [x] Return backend-generated agent trace to frontend.
 - [ ] Replace mock-only chat path with live backend chat path.
 - [ ] Keep mock mode only as fallback/offline demo.
