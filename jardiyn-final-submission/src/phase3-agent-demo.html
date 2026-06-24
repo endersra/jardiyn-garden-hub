@@ -3,37 +3,70 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JarDIYn Phase 3 Live Agent Demo</title>
+  <title>JarDIYn Garden Assistant</title>
   <style>
+    :root {
+      --green: #2f6f3e;
+      --dark: #1f2d1f;
+      --soft: #f4f7f1;
+      --border: #c8d8c1;
+      --white: #ffffff;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      background: #f4f7f1;
-      color: #1f2d1f;
+      background: var(--soft);
+      color: var(--dark);
       margin: 0;
       padding: 0;
     }
 
+    header {
+      background: linear-gradient(135deg, #2f6f3e, #5c9f62);
+      color: white;
+      padding: 36px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 10px 0;
+      font-size: 2.2rem;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
     main {
-      max-width: 980px;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 32px 20px;
+      padding: 24px 20px 44px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
     }
 
     .card {
-      background: white;
+      background: var(--white);
       border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 20px;
+      padding: 22px;
+      margin-bottom: 18px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      border: 1px solid rgba(0,0,0,0.04);
     }
 
-    h1, h2 {
+    h2 {
       margin-top: 0;
+      color: var(--green);
     }
 
     label {
-      font-weight: bold;
       display: block;
+      font-weight: bold;
       margin-top: 14px;
       margin-bottom: 6px;
     }
@@ -41,18 +74,20 @@
     input, textarea {
       width: 100%;
       box-sizing: border-box;
-      border: 1px solid #c8d8c1;
+      border: 1px solid var(--border);
       border-radius: 10px;
       padding: 12px;
       font-size: 1rem;
+      font-family: Arial, sans-serif;
     }
 
     textarea {
-      min-height: 120px;
+      min-height: 140px;
+      resize: vertical;
     }
 
     button {
-      background: #2f6f3e;
+      background: var(--green);
       color: white;
       border: none;
       border-radius: 10px;
@@ -67,118 +102,272 @@
       background: #245832;
     }
 
-    pre {
-      white-space: pre-wrap;
-      background: #f1f4ef;
+    button.secondary {
+      background: #4d6f4f;
+    }
+
+    .status {
+      margin-top: 12px;
+      color: #4d5c4d;
+      font-size: 0.95rem;
+    }
+
+    .answer-box {
+      background: #f8faf7;
+      border: 1px solid var(--border);
       padding: 16px;
       border-radius: 10px;
-      overflow-x: auto;
+      white-space: pre-wrap;
+      line-height: 1.45;
+    }
+
+    .weather-stat {
+      display: inline-block;
+      margin: 6px 8px 6px 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #edf5ea;
+      border: 1px solid #d7e8d2;
     }
 
     .trace-step {
-      border-left: 4px solid #2f6f3e;
-      padding-left: 12px;
+      border-left: 4px solid var(--green);
+      padding: 10px 0 10px 12px;
       margin-bottom: 10px;
+      background: #f8faf7;
+      border-radius: 8px;
     }
 
     .small {
       font-size: 0.92rem;
       color: #4d5c4d;
     }
+
+    .pill {
+      display: inline-block;
+      background: #e8f2e5;
+      color: #214f29;
+      border: 1px solid #cfe1ca;
+      border-radius: 999px;
+      padding: 6px 10px;
+      margin: 4px 4px 0 0;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
+  <header>
+    <h1>JarDIYn Garden Assistant</h1>
+    <p>Ask real gardening questions using live weather context, Claude reasoning, reviewer validation, and agent trace transparency.</p>
+  </header>
+
   <main>
     <section class="card">
-      <h1>JarDIYn Phase 3 Live Agent Demo</h1>
-      <p>
-        This browser demo sends a gardening question to the FastAPI backend,
-        which routes the request through the agent workflow and returns an answer,
-        reviewer validation, and an agent trace.
-      </p>
-      <p class="small">
-        Local default: http://127.0.0.1:8000. After backend deployment, paste the Render backend URL below.
-      </p>
+      <h2>Live System Status</h2>
+      <div id="systemStatus" class="status">Checking backend status...</div>
+      <div class="small">Backend: <span id="apiBaseLabel"></span></div>
     </section>
 
-    <section class="card">
-      <label for="apiBase">Backend API Base URL</label>
-      <input id="apiBase" value="https://jardiyn-agent-backend-api.onrender.com" />
+    <div class="grid">
+      <section class="card">
+        <h2>1. Local Weather Context</h2>
+        <p class="small">Enter a city to load real weather data for garden-aware advice.</p>
 
-      <label for="message">Gardening Question</label>
-      <textarea id="message">My basil leaves are yellow and the soil is soggy. What should I do?</textarea>
+        <label for="cityInput">City</label>
+        <input id="cityInput" value="Grand Rapids" />
 
-      <button id="askButton">Ask JarDIYn Agent</button>
-    </section>
+        <button id="weatherButton" class="secondary">Load Weather</button>
+        <div id="weatherStatus" class="status">Weather not loaded yet.</div>
+        <div id="weatherOutput"></div>
+      </section>
+
+      <section class="card">
+        <h2>2. Ask a Garden Question</h2>
+        <p class="small">Ask anything. The assistant will include weather context if it has been loaded.</p>
+
+        <label for="questionInput">Your Question</label>
+        <textarea id="questionInput" placeholder="Example: Can I water my tomatoes today? Why are my basil leaves yellow? What should I plant this week?"></textarea>
+
+        <button id="askButton">Ask JarDIYn</button>
+        <div id="askStatus" class="status">Ready.</div>
+      </section>
+    </div>
 
     <section class="card">
       <h2>Agent Answer</h2>
-      <pre id="answer">No answer yet.</pre>
+      <div id="answerOutput" class="answer-box">No answer yet.</div>
     </section>
 
-    <section class="card">
-      <h2>Reviewer Validation</h2>
-      <pre id="review">No review yet.</pre>
-    </section>
+    <div class="grid">
+      <section class="card">
+        <h2>Reviewer Validation</h2>
+        <div id="reviewOutput" class="answer-box">No reviewer validation yet.</div>
+      </section>
 
-    <section class="card">
-      <h2>Agent Trace</h2>
-      <div id="trace">No trace yet.</div>
-    </section>
+      <section class="card">
+        <h2>Agent Trace</h2>
+        <div id="traceOutput">No agent trace yet.</div>
+      </section>
+    </div>
   </main>
 
   <script>
-    const apiBaseInput = document.getElementById("apiBase");
-    const messageInput = document.getElementById("message");
+    const API_BASE = "https://jardiyn-agent-backend-api.onrender.com";
+
+    const apiBaseLabel = document.getElementById("apiBaseLabel");
+    const systemStatus = document.getElementById("systemStatus");
+    const cityInput = document.getElementById("cityInput");
+    const weatherButton = document.getElementById("weatherButton");
+    const weatherStatus = document.getElementById("weatherStatus");
+    const weatherOutput = document.getElementById("weatherOutput");
+    const questionInput = document.getElementById("questionInput");
     const askButton = document.getElementById("askButton");
-    const answerOutput = document.getElementById("answer");
-    const reviewOutput = document.getElementById("review");
-    const traceOutput = document.getElementById("trace");
+    const askStatus = document.getElementById("askStatus");
+    const answerOutput = document.getElementById("answerOutput");
+    const reviewOutput = document.getElementById("reviewOutput");
+    const traceOutput = document.getElementById("traceOutput");
 
-    const params = new URLSearchParams(window.location.search);
-    const apiFromUrl = params.get("api");
-    const apiFromStorage = localStorage.getItem("JARDIYN_API_BASE");
+    let latestWeather = null;
 
-    if (apiFromUrl) {
-      apiBaseInput.value = apiFromUrl;
-      localStorage.setItem("JARDIYN_API_BASE", apiFromUrl);
-    } else if (apiFromStorage) {
-      apiBaseInput.value = apiFromStorage;
+    apiBaseLabel.textContent = API_BASE;
+
+    function renderText(value) {
+      return String(value || "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char]));
     }
 
-    askButton.addEventListener("click", async () => {
-      const apiBase = apiBaseInput.value.replace(/\/$/, "");
-      const message = messageInput.value.trim();
+    async function checkBackend() {
+      try {
+        const response = await fetch(`${API_BASE}/api/health`);
+        const data = await response.json();
 
-      localStorage.setItem("JARDIYN_API_BASE", apiBase);
+        systemStatus.innerHTML = `
+          <span class="pill">Backend: ${renderText(data.status)}</span>
+          <span class="pill">Mode: ${renderText(data.llm_mode)}</span>
+          <span class="pill">Phase: ${renderText(data.phase)}</span>
+        `;
+      } catch (error) {
+        systemStatus.textContent = `Backend status check failed: ${error.message}`;
+      }
+    }
 
+    function weatherSummaryForPrompt() {
+      if (!latestWeather) {
+        return "No weather context loaded.";
+      }
+
+      const loc = latestWeather.location || {};
+      const current = latestWeather.current || {};
+
+      return [
+        `Weather location: ${loc.name || "Unknown"}, ${loc.state || ""}, ${loc.country || ""}`,
+        `Temperature: ${current.temperature_f ?? "unknown"} F`,
+        `Humidity: ${current.humidity_percent ?? "unknown"}%`,
+        `Precipitation: ${current.precipitation_inches ?? "unknown"} inches`,
+        `Wind: ${current.wind_mph ?? "unknown"} mph`,
+        `Weather summary: ${current.summary || "unknown"}`
+      ].join("\\n");
+    }
+
+    async function loadWeather() {
+      const city = cityInput.value.trim();
+
+      if (!city) {
+        weatherStatus.textContent = "Please enter a city.";
+        return;
+      }
+
+      weatherStatus.textContent = "Loading real weather data...";
+      weatherOutput.innerHTML = "";
+
+      try {
+        const response = await fetch(`${API_BASE}/api/weather?city=${encodeURIComponent(city)}`);
+
+        if (!response.ok) {
+          throw new Error(`Weather request failed with status ${response.status}`);
+        }
+
+        latestWeather = await response.json();
+
+        const loc = latestWeather.location || {};
+        const current = latestWeather.current || {};
+        const daily = latestWeather.daily || {};
+
+        weatherStatus.textContent = `Weather loaded for ${loc.name || city}.`;
+
+        weatherOutput.innerHTML = `
+          <div class="weather-stat"><strong>${renderText(current.temperature_f)}°F</strong><br>Temperature</div>
+          <div class="weather-stat"><strong>${renderText(current.humidity_percent)}%</strong><br>Humidity</div>
+          <div class="weather-stat"><strong>${renderText(current.precipitation_inches)}</strong><br>Precipitation</div>
+          <div class="weather-stat"><strong>${renderText(current.wind_mph)} mph</strong><br>Wind</div>
+          <p><strong>Current condition:</strong> ${renderText(current.summary)}</p>
+          <p class="small">Forecast dates: ${renderText((daily.time || []).join(", "))}</p>
+        `;
+      } catch (error) {
+        latestWeather = null;
+        weatherStatus.textContent = `Weather error: ${error.message}`;
+      }
+    }
+
+    async function askAgent() {
+      const question = questionInput.value.trim();
+
+      if (!question) {
+        askStatus.textContent = "Please type a gardening question first.";
+        return;
+      }
+
+      askStatus.textContent = "JarDIYn is reasoning...";
       answerOutput.textContent = "Thinking...";
       reviewOutput.textContent = "Waiting for reviewer validation...";
       traceOutput.textContent = "Waiting for agent trace...";
 
+      const message = `
+User gardening question:
+${question}
+
+Current weather context:
+${weatherSummaryForPrompt()}
+
+Please provide practical, beginner-friendly garden advice. Use the weather context when it is relevant.
+`.trim();
+
       try {
-        const response = await fetch(`${apiBase}/api/agent/chat`, {
+        const response = await fetch(`${API_BASE}/api/agent/chat`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
             message,
-            user_id: "browser-demo-user"
+            user_id: "public-frontend-user"
           })
         });
 
         if (!response.ok) {
-          throw new Error(`Backend returned ${response.status}`);
+          throw new Error(`Agent request failed with status ${response.status}`);
         }
 
         const data = await response.json();
 
+        askStatus.textContent = "Answer received.";
         answerOutput.textContent = data.answer || data.final_answer || "No answer returned.";
         reviewOutput.textContent = JSON.stringify(data.review || {}, null, 2);
 
-        traceOutput.innerHTML = "";
         const trace = data.trace || [];
+        traceOutput.innerHTML = "";
 
         if (!trace.length) {
           traceOutput.textContent = "No trace returned.";
@@ -189,19 +378,25 @@
           const div = document.createElement("div");
           div.className = "trace-step";
           div.innerHTML = `
-            <strong>Step ${step.step || ""}: ${step.agent || "unknown"}</strong><br>
-            Action: ${step.action || "n/a"}<br>
-            Source: ${step.source || "n/a"}<br>
-            Model: ${step.model || "n/a"}
+            <strong>Step ${renderText(step.step || "")}: ${renderText(step.agent || "unknown")}</strong><br>
+            Action: ${renderText(step.action || "n/a")}<br>
+            Source: ${renderText(step.source || "n/a")}<br>
+            Model: ${renderText(step.model || "n/a")}
           `;
           traceOutput.appendChild(div);
         });
       } catch (error) {
-        answerOutput.textContent = `Error: ${error.message}`;
-        reviewOutput.textContent = "No review because the request failed.";
-        traceOutput.textContent = "No trace because the request failed.";
+        askStatus.textContent = `Agent error: ${error.message}`;
+        answerOutput.textContent = "The agent request failed. Check the backend deployment and Render logs.";
+        reviewOutput.textContent = "No reviewer validation returned.";
+        traceOutput.textContent = "No trace returned.";
       }
-    });
+    }
+
+    weatherButton.addEventListener("click", loadWeather);
+    askButton.addEventListener("click", askAgent);
+
+    checkBackend();
   </script>
 </body>
 </html>
