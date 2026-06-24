@@ -133,8 +133,8 @@ A feature is done when:
 ## Phase 3 — Live Agent Runtime
 
 - [x] Add FastAPI backend.
-- [ ] Add Claude API client wrapper.
-- [ ] Keep Claude API key in backend environment variables only.
+- [x] Add Claude API client wrapper.
+- [x] Keep Claude API key in backend environment variables only.
 - [x] Create live orchestrator workflow.
 - [x] Add garden memory/tool retrieval.
 - [x] Add seasonal context tool.
@@ -144,7 +144,7 @@ A feature is done when:
 - [ ] Replace mock-only chat path with live backend chat path.
 - [ ] Keep mock mode only as fallback/offline demo.
 - [x] Add backend tests for agent routing.
-- [ ] Add tests proving LLM client is called or mocked through the backend.
+- [x] Add tests proving LLM client is called or mocked through the backend.
 - [x] Add tests proving trace includes orchestrator, tools, reasoner, and reviewer.
 - [ ] Deploy backend.
 - [ ] Connect deployed frontend to deployed backend.
