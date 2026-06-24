@@ -26,6 +26,14 @@ Novice homeowners, eco-minded gardeners, and landscape designers — see `person
 
 Traditional landscaping has a precision gap, a visualization deficit, and a knowledge barrier. Homeowners want sustainable gardens but lack zone-accurate guidance. JarDIYn closes that gap — see `prd.md`.
 
+## Phase 3 Focus
+
+Phase 3 converts JarDIYn from a deterministic mock prototype into a live agentic AI system.
+
+The Project 2 version had strong documentation, UI design, and simulated agent traces, but it ran in mock mode through `mockApi.js` and `ruleEngine.js`. Phase 3 adds a FastAPI backend, Claude API integration, live orchestrator routing, memory/tool retrieval, reviewer validation, and backend-generated agent traces.
+
+Mock mode remains available only for fallback, offline demos, and regression tests.
+
 ---
 
 ## Main features
