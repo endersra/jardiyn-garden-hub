@@ -132,7 +132,7 @@ A feature is done when:
 
 ## Phase 3 — Live Agent Runtime
 
-- [ ] Add FastAPI backend.
+- [x] Add FastAPI backend.
 - [ ] Add Claude API client wrapper.
 - [ ] Keep Claude API key in backend environment variables only.
 - [ ] Create live orchestrator workflow.
